@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta name="description" content="Poste mídias no Instagram de forma eficiente e rápida">
+    <meta name="keywords" content=" Instagram, mídias, postes, automático, boots, gratuito, alcance no Instagram, seguidores, seguir, curtidas, likes, comentários ">
+    <meta name="author" content="Graphtech">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.50">
+    <title>Login</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='images/instagram.png') }}" type="image/png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</head>
+<body>
+    <div class="main-login">
+        <div class="left-login">
+            <h1>Bem-vindo ao InstaPost</h1>
+<img src="{{ url_for('static', filename='images/devices-animate.svg') }}" class="left-login-image" alt="a">
+        </div>
+        <div class="right-login">
+            <div class="card-login">
+                <h1>Login</h1>
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="textfield">
+                        <label for="usuario">Usuário:</label>
+                        <input type="text" id="usuario" name="usuario" required placeholder="Digite seu usuário">
+                    </div>
+                    <div class="textfield">
+                        <label for="senha">Senha:</label>
+                        <input type="password" id="senha" name="senha" required placeholder="Digite sua senha">
+                    </div>
+                    <button type="submit" class="btn-login">Login</button>
+                    <p id="error-message" style="color: red; display: none;">Usuário ou senha incorreto</p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loader"></div>
+        <p id="loadingMessage">Buscando informações...</p>
+    </div>
+
+
+
+        <i class='bx bx-help-circle icone-ajuda' id="iconeAjuda"></i>
+    <div class="mensagem-ajuda" id="mensagemAjuda"  >Você deve entrar com o seu nome de Usuário e senha do instagram, caso não saiba a senha você pode estar renomeando <a href="https://help.instagram.com/374546259294234" title="Clique aqui">Aqui</a></div>
+
+
+
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+
+            showLoading('Buscando informações...');
+
+            fetch('/login', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                hideLoading();
+                if (data.status === 'success') {
+                    window.location.href = '/main';
+                } else if (data.status === '2fa') {
+                    window.location.href = '/2fa';
+                } else {
+                    document.getElementById('error-message').style.display = 'block';
+                }
+            })
+            .catch(error => {
+                hideLoading();
+                console.error('Erro:', error);
+                document.getElementById('error-message').style.display = 'block';
+            });
+        }
+
+        function showLoading(message) {
+            var loadingOverlay = document.getElementById('loadingOverlay');
+            var loadingMessage = document.getElementById('loadingMessage');
+            loadingMessage.textContent = message;
+            loadingOverlay.style.display = 'flex';
+        }
+
+        function hideLoading() {
+            var loadingOverlay = document.getElementById('loadingOverlay');
+            loadingOverlay.style.display = 'none';
+        }
+
+    </script>
+</body>
+</html>

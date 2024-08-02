@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.75">
+    <title>Agendador de Postagens do Instagram</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='images/instagram.png') }}" type="image/png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</head>
+<body class="main-page">
+    <div class="main-container">
+        <button class="settings-button" onclick="abrirConfiguracoes()">⚙️ Configurações</button>
+
+        <div class="user-info">
+            <h2>Olá, {{ user_info['username'] }}</h2>
+            <p><strong>Nome Completo:</strong> {{ user_info['full_name'] }}</p>
+            <p><strong>Biografia:</strong> {{ user_info['biography'] }}</p>
+        </div>
+
+<form id="agendamentoForm" enctype="multipart/form-data" class="form-container">
+            <label for="media_folder">Arquivos de Mídia:</label>
+            <input type="file" id="media_folder" name="media_files" multiple required>
+            <label for="post_interval">Intervalo de Postagem:</label>
+            <input type="number" id="post_interval" name="post_interval" placeholder="Adicione o tempo de postagens das midias (Horas ou Minutos)" required>
+            <select id="interval_type" name="interval_type" required>
+                <option value="minutes">Minutos </option>
+                <option value="hours">Horas</option>
+            </select>
+            <label for="hashtags">Hashtags e frases(opcional):</label>
+            <input type="text" id="hashtags" name="hashtags" placeholder="#exemplo1 #exemplo2 adicione os hashtags adequados">
+            <button type="button" id="toggleButton" class="toggle-button" onclick="iniciarPararAgendamento()">Iniciar Agendamento</button>
+        </form>
+        <div id="configPanel" class="config-panel" style="display: none;">
+            <button onclick="alternarExclusao()">Alternar Exclusão de Mídias</button>
+            <button onclick="window.location.href='/'" >Sair </button>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+        <p id="loadingMessage"></p>
+    </div>
+
+    <i class='bx bx-help-circle icone-ajuda' id="iconeAjuda"></i>
+    <div class="mensagem-ajuda" id="mensagemAjuda">Escolha as mídias que deseja postar, em seguida defina minutos ou horas de intervalo.<br>
+    Uma mídia vai ser postada automaticamente enquando as outras vão ser postadas em pausas definidas pelo usuário.<br>
+    Após definir as mídias e o tempo, é só clicar em "iniciar as postagens", você pode estar parando elas em "parar postagens".<br>
+    Você também pode estar habilitando ou desabilitando as exclusões das mídias postadas, isso funciona caso você queira apagar a mídias do seu aparelho após serem postadas.<br><p>
+            <u>Lembrando que se postar muitas mídias em um curto período de tempo o Instagram pode bloquear a sua conta, aconselhável postar a cada 10 minutos.
+        </u> </p>  </div>
+
+</body>
+</html>
