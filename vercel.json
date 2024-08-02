@@ -1,0 +1,9 @@
+{
+
+    "rewrites": [
+
+        { "sinstagram_scheduler": "/(.*)", "destination": "/api/app" }
+
+    ]
+
+}
